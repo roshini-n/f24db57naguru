@@ -1,4 +1,7 @@
-var createError = require('http-errors');
+//Mongo 
+require('dotenv').config(); // Load environment variables
+var mongoose = require('mongoose'); // Require mongoose for MongoDBvar createError = require('http-errors');
+//end
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -12,6 +15,26 @@ var pickRouter = require('./routes/pick');
 
 var app = express();
 
+// Connect to MongoDB using Mongoose
+const connectionString = process.env.MONGO_CON;
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => console.log("MongoDB connected successfully"))
+.catch((err) => console.error("MongoDB connection error:", err));
+
+// Get the default connection
+var db = mongoose.connection;
+
+// Bind connection to error event (to get notification of connection errors)
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+
+// Bind connection to open event (to confirm successful connection)
+db.once("open", function() {
+  console.log("Connection to DB succeeded");
+});
+//end
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
