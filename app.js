@@ -17,7 +17,12 @@ var app = express();
 
 // Connect to MongoDB using Mongoose
 const connectionString = process.env.MONGO_CON;
-mongoose.connect(connectionString)
+if (!connectionString) {
+  console.error('MongoDB is not set!');
+  process.exit(1);  
+}
+mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 5000,  // Shorter timeout
+  socketTimeoutMS: 45000 })
 .then(() => console.log("MongoDB connected successfully"))
 .catch((err) => console.error("MongoDB connection error:", err));
 // Bind connection to error event
