@@ -1,5 +1,5 @@
 require('dotenv').config();
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -16,23 +16,11 @@ var resourceRouter = require('./routes/resource');
 var app = express();
 
 // Connect to MongoDB using Mongoose
-// const connectionString = process.env.MONGO_CON
-// mongoose.connect(connectionString);
-// .then(() => console.log("MongoDB connected successfully"))
-// .catch((err) => console.error("MongoDB connection error:", err));
+const connectionString = process.env.MONGO_CON;
+mongoose.connect(connectionString)
+.then(() => console.log("MongoDB connected successfully"))
+.catch((err) => console.error("MongoDB connection error:", err));
 // Bind connection to error event
-async function connectToDatabase() {
-  const connectionString = process.env.MONGO_CON;
-  try {
-    await mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
-    console.log('Successfully connected to MongoDB');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
-    process.exit(1); // Exit the process if the connection fails
-  }
-}
-
-connectToDatabase();
 var db = mongoose.connection;
 
 // Bind connection to error event (to get notification of connection errors)
