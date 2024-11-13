@@ -35,7 +35,6 @@ db.once("open", function() {
 async function recreateDB() {
   // Delete all existing relics
   await Relic.deleteMany();
-
   // Create instances of Relic
   let instance1 = new Relic({ relic_name: "Ancient Vase", origin: "Greece", estimated_value: 5000 });
   let instance2 = new Relic({ relic_name: "Samurai Sword", origin: "Japan", estimated_value: 12000 });
@@ -69,8 +68,8 @@ app.use('/relics', relicsRouter);
 app.use('/grid', gridRouter);
 app.use('/pick', pickRouter);
 app.use('/resource', resourceRouter);
-//app.use('/api/relics', relicsRouter);
-
+app.use('/api/relics', relicsRouter);
+app.use('/resource', relicsRouter);
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

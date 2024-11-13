@@ -1,21 +1,19 @@
-// routes/resource.js
 const express = require('express');
 const router = express.Router();
+const relicController = require('../controllers/relicController');
+const apiController = require('../controllers/api'); // Assuming apiController exists
 
-// Require controller modules
-const api_controller = require('../controllers/api');
-const relics_controller = require('../controllers/relicController');
+// API Route
+router.get('/api', apiController.api);
 
-/// API ROUTE ///
+// Relic Routes
+router.get('/relics', relicController.relic_view_all_Page); // Page for viewing all relics
+router.get('/relics/:id', relicController.relic_detail); // Get details of a specific relic
 
-// GET request for API base
-router.get('/', api_controller.api);
-
-// Relics Routes
-router.get('/', relics_controller.relic_list); // GET request for list of all Relics
-router.post('/:id', relics_controller.relic_create_post); // POST request for creating a Relic
-router.get('/:id', relics_controller.relic_detail); // GET request for a specific Relic
-router.put('/:id', relics_controller.relic_update_put); // PUT request to update a Relic
-router.delete('/:id', relics_controller.relic_delete); // DELETE request to delete a Relic
+// API CRUD Routes for Relics
+router.get('/api/relics', relicController.relic_view_all_Page); // List all relics
+router.post('/api/relics', relicController.relic_create_post); // Create a relic
+router.put('/api/relics/:id', relicController.relic_update_put); // Update a relic by ID
+router.delete('/api/relics/:id', relicController.relic_delete); // Delete a relic by ID
 
 module.exports = router;
