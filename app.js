@@ -21,8 +21,7 @@ if (!connectionString) {
   console.error('MongoDB is not set!');
   process.exit(1);  // Exit the process if URI is not set
 }
-mongoose.connect(connectionString, { serverSelectionTimeoutMS: 5000,
-  socketTimeoutMS: 45000 })
+mongoose.connect(connectionString)
 .then(() => console.log("MongoDB connected successfully"))
 .catch((err) => console.error("MongoDB connection error:", err));
 // Bind connection to error event
