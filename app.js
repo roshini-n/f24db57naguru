@@ -16,11 +16,10 @@ var resourceRouter = require('./routes/resource');
 var app = express();
 
 // Connect to MongoDB using Mongoose
-const connectionString = process.env.MONGO_CON;
-console.log("Starting server...");
-mongoose.connect(connectionString)
-.then(() => console.log("MongoDB connected successfully"))
-.catch((err) => console.error("MongoDB connection error:", err));
+const connectionString = process.env.MONGO_CON
+mongoose.connect(connectionString);
+// .then(() => console.log("MongoDB connected successfully"))
+// .catch((err) => console.error("MongoDB connection error:", err));
 // Bind connection to error event
 var db = mongoose.connection;
 
