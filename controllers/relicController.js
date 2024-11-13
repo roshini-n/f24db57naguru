@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+//const mongoose = require('mongoose');
 // controllers/relicController.js
 var Relic = require('../models/relic');
 
