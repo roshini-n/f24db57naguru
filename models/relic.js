@@ -8,3 +8,4 @@ const relicSchema = mongoose.Schema({
 });
 
 module.exports = mongoose.model('Relic', relicSchema);
+module.exports = Relic;

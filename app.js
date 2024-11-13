@@ -19,7 +19,7 @@ var app = express();
 const connectionString = process.env.MONGO_CON;
 if (!connectionString) {
   console.error('MongoDB is not set!');
-  process.exit(1);  
+  process.exit(1);  // Exit the process if URI is not set
 }
 mongoose.connect(connectionString, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 5000,  // Shorter timeout
   socketTimeoutMS: 45000 })
