@@ -5,13 +5,6 @@ block content
 
   // Unbuffered code block to define results array
   -
-    let results = [
-      { relic_name: "Ancient Sword", origin: "Japan", ev: 500 },
-      { relic_name: "Golden Chalice", origin: "Egypt", ev: 1200 },
-      { relic_name: "Viking Helmet", origin: "Norway", ev: 800 },
-      { relic_name: "Roman Coin", origin: "Italy", ev: 300 },
-      { relic_name: "Pharaoh's Mask", origin: "Egypt", ev: 2500 }
-    ];
 
   // Container for Bootstrap grid
   .container-fluid
@@ -21,7 +14,7 @@ block content
         .col-sm-2
           h3 #{relic.relic_name}
           p Origin: #{relic.origin}
-          p Estimated Value: #{relic.ev}$
+          p Estimated Value: #{relic.estimated_value}$
 
           // Button that calls buy() function with the index of the relic
           button(type="button", class="btn btn-outline-success", onclick=`buy(${index +1})`) Purchase
