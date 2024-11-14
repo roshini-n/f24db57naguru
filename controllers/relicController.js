@@ -2,6 +2,7 @@
 // controllers/relicController.js
 var Relic = require('../models/relic');
 
+
 // List all relics
 exports.relic_view_all_Page = async function(req, res) {
     try {
@@ -16,21 +17,15 @@ exports.relic_view_all_Page = async function(req, res) {
 
 // Get details of a specific relic
 exports.relic_detail = async function(req, res) {
+    console.log("detail: " + req.params.id);
     try {
-        // Ensure req.params.id is a valid ObjectId
-        const relicId = req.params.id;
-        if (!mongoose.Types.ObjectId.isValid(relicId)) {
-            return res.status(400).json({ error: "Invalid ID format" });
+        const result = await Relic.findById(req.params.id);
+        if (!result) {
+            return res.status(404).send({ error: `Document for id ${req.params.id} not found` });
         }
-
-        const relic = await Relic.findById(relicId);
-        if (!relic) {
-            return res.status(404).json({ message: "Relic not found" });
-        }
-        res.json(relic);
+        res.send(result);
     } catch (error) {
-        console.error("Error retrieving relic:", error);
-        res.status(500).json({ error: "Failed to retrieve relic details" });
+        res.status(500).send({ error: `Error retrieving document for id ${req.params.id}` });
     }
 };
 
@@ -73,21 +68,23 @@ exports.relic_delete = async function(req, res) {
 
 // Handle relic update on PUT
 exports.relic_update_put = async function(req, res) {
+    console.log(`Update on id ${req.params.id} with body ${JSON.stringify(req.body)}`);
     try {
-        const updatedRelic = await Relic.findByIdAndUpdate(
-            req.params.id,
-            {
-                relic_name: req.body.relic_name,
-                origin: req.body.origin,
-                estimated_value: req.body.estimated_value
-            },
-            { new: true } // Option to return the updated document
-        );
-        if (!updatedRelic) {
-            return res.status(404).json({ message: "Relic not found" });
+        let toUpdate = await Relic.findById(req.params.id);
+       
+        if (!toUpdate) {
+            return res.status(404).send(`{"error": "Artifact with id ${req.params.id} not found"}`);
         }
-        res.json(updatedRelic);
-    } catch (error) {
-        res.status(400).json({ error: "Failed to update relic" });
+ 
+        // Do updates of properties
+        toUpdate.relic_name = req.body.relic_name;
+        toUpdate.origin = req.body.origin;
+        toUpdate.estimated_value = req.body.estimated_value;
+ 
+        let result = await toUpdate.save();
+        console.log("Success " + result);
+        res.send(result);
+    } catch (err) {
+        res.status(500).send(`{"error": "Update for id ${req.params.id} failed due to error: ${err}"}`);
     }
 };
