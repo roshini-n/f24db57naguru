@@ -54,15 +54,23 @@ exports.relic_create_post = async (req, res) => {
 
 
 // Handle relic deletion on DELETE
-exports.relic_delete = async function(req, res) {
+// Handle Relic delete on DELETE
+exports.relic_delete = async function (req, res) {
+    console.log(`Attempting to delete relic with id: ${req.params.id}`);
     try {
         const relic = await Relic.findByIdAndDelete(req.params.id);
+
         if (!relic) {
-            return res.status(404).json({ message: "Relic not found" });
+            // Relic not found
+            console.warn(`Relic with id ${req.params.id} not found`);
+            return res.status(404).json({ error: `Relic with id ${req.params.id} not found` });
         }
-        res.json({ message: "Relic deleted successfully" });
+
+        console.log(`Successfully deleted relic with id: ${req.params.id}`);
+        res.status(200).json({ message: "Relic deleted successfully", data: relic });
     } catch (error) {
-        res.status(500).json({ error: "Failed to delete relic" });
+        console.error(`Error deleting relic: ${error.message}`);
+        res.status(500).json({ error: `Failed to delete relic: ${error.message}` });
     }
 };
 
