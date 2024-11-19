@@ -1,0 +1,52 @@
+extends layout
+
+block content
+  h1= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+  - let relicId = toShow._id
+  - let relic_name = toShow.relic_name
+  - let origin = toShow.origin
+  - let estimated_value = toShow.estimated_value
+  
+  div.row(class='mb-4')
+    div.col-md-12
+      p.m-0
+        | ID is: 
+        span.font-weight-bold #{relicId}
+
+  - let actionid = "/resource/relics/" + relicId
+  form(id='RelicForm', action=actionid, method="PUT")
+    div.form-group
+      label.relicsAttr(for='relic_name') Relic Name
+      input#relic_name.form-control(type='text', name='relic_name', value=relic_name)
+
+    div.form-group
+      label.relicsAttr(for='origin') Origin
+      input#origin.form-control(type='text', name='origin', value=origin)
+
+    div.form-group
+      label.relicsAttr(for='estimated_value') Estimated Value
+      input#estimated_value.form-control(type='number', name='estimated_value', value=estimated_value, min='0')
+
+    // Submit button
+    div.form-group
+      input(type="submit", class="btn btn-primary")
+
+  script.
+    document.forms['RelicForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+      }).then((body) => {
+        alert("Update succeeded");
+        console.log("Server response:", body);
+      }).catch((error) => {
+        alert("Update failed: " + error.message);
+      });
+    });

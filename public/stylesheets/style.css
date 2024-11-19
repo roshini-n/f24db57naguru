@@ -16,3 +16,26 @@ a {
   border-radius: 5px;
   text-align: center;
 }
+.relicAtt
+{
+  background-color: lavenderblush;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.relicsAttr
+{
+  background-color: burlywood;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  margin-right: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
