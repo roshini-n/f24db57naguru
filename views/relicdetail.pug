@@ -1,0 +1,28 @@
+extends layout
+
+block content
+  h1= title
+  link(rel='stylesheet', href='/stylesheets/style.css')
+
+  - let relicId = toShow._id
+  - let relic_name = toShow.relic_name
+  - let origin = toShow.origin
+  - let estimated_value = toShow.estimated_value
+
+  div
+    div.row
+      div(class='relicAttr mr-3') Relic ID is:
+      div #{relicId}
+  
+  div.row
+    div(class='relicAttr mr-3') Relic Name is:
+    div #{relic_name}
+  
+  div.row
+    div(class='relicAttr mr-3') Relic Origin Year is:
+    div #{origin}
+  
+  div.row
+    div(class='relicAttr mr-3') Relic Estimated Value is:
+    div #{estimated_value}
+

@@ -1,4 +1,5 @@
-
+require('dotenv').config();
+var mongoose = require('mongoose');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -15,51 +16,12 @@ var resourceRouter = require('./routes/resource');
 var app = express();
 
 // Connect to MongoDB using Mongoose
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-dotenv.config();
-
-const uri = process.env.MONGO_URI;
-//var mongoose = require('mongoose');
-mongoose.connect(uri)
-if (!uri) {
-  console.error("MongoDB URI is not set");
-  process.exit(1);
-}
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(err => console.error("MongoDB connection error:", err));
-// Bind connection to error event
-var db = mongoose.connection;
-
-// Bind connection to error event (to get notification of connection errors)
+const connectionString = process.env.MONGO_CON
+mongoose.connect(connectionString);
+const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once("open", function() {
-  console.log("Connection to DB succeeded");
-});
-
-// View engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'pug');
-
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/relics', relicsRouter);
-app.use('/grid', gridRouter);
-app.use('/pick', pickRouter);
-app.use('/resource', resourceRouter);
-app.use('/api/relics', relicsRouter);
-//app.use('/api/relics', relicsRouter);
-app.use('/resource', relicsRouter);
-// Catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+    console.log("Connection to DB succeeded");
 });
 
 // Function to seed the database
@@ -70,26 +32,42 @@ async function recreateDB() {
   let instance1 = new Relic({ relic_name: "Ancient Vase", origin: "Greece", estimated_value: 5000 });
   let instance2 = new Relic({ relic_name: "Samurai Sword", origin: "Japan", estimated_value: 12000 });
   let instance3 = new Relic({ relic_name: "Egyptian Amulet", origin: "Egypt", estimated_value: 8000 });
-  instance1.save().then(doc=>{
-    console.log("Relic 1 saved")}
-    ).catch(err=>{
-    console.error(err)
-    });
-    instance2.save().then(doc=>{
-      console.log("Relic 2 saved")}
-      ).catch(err=>{
-      console.error(err)
-      });
-      instance3.save().then(doc=>{
-        console.log("Relic 3 saved")}
-        ).catch(err=>{
-        console.error(err)
-        });
-    }
-    let reseed = true;
-    if (reseed) {recreateDB();}
 
+  // Save instances to the database
+  await instance1.save().then(() => console.log("Relic 1 saved"));
+  await instance2.save().then(() => console.log("Relic 2 saved"));
+  await instance3.save().then(() => console.log("Relic 3 saved"));
+}
 
+// Seed the database on server start if needed
+let reseed = true;
+if (reseed) {
+  recreateDB();
+}
+
+// View engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
+
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/relics', relicsRouter);
+app.use('/grid', gridRouter);
+app.use('/pick', pickRouter);
+app.use('/resource', resourceRouter);
+//app.use('/api/relics', relicsRouter);
+//app.use('/api/relics', relicsRouter);
+//app.use('/resource', relicsRouter);
+// Catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  next(createError(404));
+});
 
 // error handler
 app.use(function(err, req, res, next) {
