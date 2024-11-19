@@ -1,5 +1,4 @@
-require('dotenv').config();
-var mongoose = require('mongoose');
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -16,41 +15,20 @@ var resourceRouter = require('./routes/resource');
 var app = express();
 
 // Connect to MongoDB using Mongoose
+require('dotenv').config();
 const connectionString = process.env.MONGO_CON;
+mongoose = require('mongoose');
 mongoose.connect(connectionString)
-.then(() => console.log("MongoDB connected successfully"))
-.catch((err) => console.error("MongoDB connection error:", err));
+// .then(() => console.log("MongoDB connected successfully"))
+// .catch((err) => console.error("MongoDB connection error:", err));
 // Bind connection to error event
 var db = mongoose.connection;
 
 // Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-// Bind connection to open event (to confirm successful connection)
 db.once("open", function() {
   console.log("Connection to DB succeeded");
 });
-
-// Function to seed the database
-async function recreateDB() {
-  // Delete all existing relics
-  await Relic.deleteMany();
-  // Create instances of Relic
-  let instance1 = new Relic({ relic_name: "Ancient Vase", origin: "Greece", estimated_value: 5000 });
-  let instance2 = new Relic({ relic_name: "Samurai Sword", origin: "Japan", estimated_value: 12000 });
-  let instance3 = new Relic({ relic_name: "Egyptian Amulet", origin: "Egypt", estimated_value: 8000 });
-
-  // Save instances to the database
-  await instance1.save().then(() => console.log("Relic 1 saved"));
-  await instance2.save().then(() => console.log("Relic 2 saved"));
-  await instance3.save().then(() => console.log("Relic 3 saved"));
-}
-
-// Seed the database on server start if needed
-let reseed = true;
-if (reseed) {
-  recreateDB();
-}
 
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -75,6 +53,35 @@ app.use('/resource', relicsRouter);
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
+// Function to seed the database
+async function recreateDB() {
+  // Delete all existing relics
+  await Relic.deleteMany();
+  // Create instances of Relic
+  let instance1 = new Relic({ relic_name: "Ancient Vase", origin: "Greece", estimated_value: 5000 });
+  let instance2 = new Relic({ relic_name: "Samurai Sword", origin: "Japan", estimated_value: 12000 });
+  let instance3 = new Relic({ relic_name: "Egyptian Amulet", origin: "Egypt", estimated_value: 8000 });
+  instance1.save().then(doc=>{
+    console.log("Relic 1 saved")}
+    ).catch(err=>{
+    console.error(err)
+    });
+    instance2.save().then(doc=>{
+      console.log("Relic 2 saved")}
+      ).catch(err=>{
+      console.error(err)
+      });
+      instance3.save().then(doc=>{
+        console.log("Relic 3 saved")}
+        ).catch(err=>{
+        console.error(err)
+        });
+    }
+    let reseed = true;
+    if (reseed) {recreateDB();}
+
+
 
 // error handler
 app.use(function(err, req, res, next) {

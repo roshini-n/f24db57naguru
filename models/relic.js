@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-const relicSchema = new mongoose.Schema({
+const relicSchema = mongoose.Schema({
     relic_name: { type: String, required: true },
     origin: { type: String, required: true },
     estimated_value: { type: Number, required: true }
 });
-const Relic = mongoose.model('Relic', relicSchema);
-module.exports = Relic;
+//const Relic = mongoose.model('Relic', relicSchema);
+module.exports = mongoose.model("Relic",relicSchema)
