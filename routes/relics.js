@@ -10,6 +10,7 @@ const Detail_controller = require('../controllers/DetailController');
 // router.get('/:id', relic_controller.relic_detail);
 // router.put('/:id', relic_controller.relic_update_put);
 // router.delete('/:id', relic_controller.relic_delete);
+//router.get('/', relic_controller.relic_list);
 
 router.get('/', relic_controller.relic_view_all_Page);
 router.post('/relics', relic_controller.relic_create_post);
@@ -18,5 +19,6 @@ router.put('/relics/:id', relic_controller.relic_update_put);
 router.delete('/relics/:id', relic_controller.relic_delete);
 
 router.get('/detail', Detail_controller.relic_view_one_Page);
-
+router.get('/create', Detail_controller.relic_create_Page);
+router.get('/update', Detail_controller.relic_update_Page);
 module.exports = router;

@@ -1,0 +1,37 @@
+extends layout
+
+block content
+  h1= title
+  link(rel='stylesheet', href='/stylesheets/style.css')
+
+  form(id='RelicForm', action="/resource/relics", method="POST")
+    div.form-group
+      label.relicAtt(for='relic_name') Relic Name
+      input#relic_name(type='text', name='relic_name', class='form-control', required)
+    div.form-group
+      label.relicAtt(for='origin') Origin 
+      input#origin(type='text', name='origin', class='form-control', required)
+    div.form-group
+      label.relicAtt(for='estimated_value') Estimated Value
+      input#estimated_value(type='number', name='estimated_value', class='form-control', required, min='0')
+    button(type='submit', class='btn btn-primary mt-3') Create Relic
+
+  script.
+    document.forms['RelicForm'].addEventListener('submit', (event) => {
+      event.preventDefault(); 
+      
+      alert("Submitting relic details...");
+      fetch(event.target.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        if (!resp.ok) throw new Error(resp.statusText);
+        return resp.json();
+      }).then((body) => {
+        alert("Save succeeded");
+        console.log("Server response:", body);
+      }).catch((error) => {
+        alert("Save failed: " + error.message);
+      });
+    });

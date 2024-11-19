@@ -17,3 +17,24 @@ exports.relic_view_one_Page = async function (req, res) {
         res.send(`{'error': '${err}'}`);
     }
 };
+
+exports.relic_create_Page = function (req, res) {
+    console.log("Create view");
+    try {
+      res.render('reliccreate', { title: 'Create Relic' });
+    } catch (err) {
+      res.status(500);
+      res.send(`{'error': '${err}'}`);
+    }
+  };
+
+  exports.relic_update_Page = async function(req, res) {
+    console.log("Update view for item " + req.query.id);
+    try {
+      let result = await Relic.findById(req.query.id);
+      res.render('relicupdate', { title: 'Relic Update', toShow: result });
+    } catch (err) {
+      res.status(500);
+      res.send(`{'error': '${err}'}`);
+    }
+  };

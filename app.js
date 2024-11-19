@@ -63,7 +63,7 @@ app.use('/pick', pickRouter);
 app.use('/resource', resourceRouter);
 //app.use('/api/relics', relicsRouter);
 //app.use('/api/relics', relicsRouter);
-//app.use('/resource', relicsRouter);
+app.use('/resource', relicsRouter);
 // Catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
