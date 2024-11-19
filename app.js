@@ -15,16 +15,20 @@ var resourceRouter = require('./routes/resource');
 var app = express();
 
 // Connect to MongoDB using Mongoose
-require('dotenv').config();
-const connectionString = process.env.MONGO_CON;
-var mongoose = require('mongoose');
-mongoose.connect(connectionString)
-.then(() => {
-  console.log("Successfully connected to MongoDB");
-})
-.catch(err => {
-  console.error("MongoDB connection error:", err.message);
-});
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const uri = process.env.MONGO_URI;
+//var mongoose = require('mongoose');
+mongoose.connect(uri)
+if (!uri) {
+  console.error("MongoDB URI is not set");
+  process.exit(1);
+}
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("MongoDB connection error:", err));
 // Bind connection to error event
 var db = mongoose.connection;
 
