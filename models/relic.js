@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 
-const relicSchema = mongoose.Schema({
+const relicSchema = new Schema({
     relic_name: { type: String, required: true },
     origin: { type: String, required: true },
     estimated_value: { type: Number, required: true }
