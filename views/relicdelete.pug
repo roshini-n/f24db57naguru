@@ -1,0 +1,72 @@
+extends layout
+
+block content
+  h1 Relic Deletion
+  link(rel='stylesheet', href='/stylesheets/style.css')
+
+  if (toShow == null)
+    h2 No instance to delete
+  else
+    - let relicId = toShow._id
+    - let relicName = toShow.relic_name
+    - let origin = toShow.origin
+    - let estimatedValue = toShow.estimated_value
+    - let actionid = "/resource/relics/" + relicId
+
+    div.container
+      div.row.mb-4
+        div.col-md-12
+          p Relic details for deletion
+
+      div.row.mb-3
+        div.col-md-3
+          div(class='relicAttr') Relic ID:
+        div.col-md-9
+          div #{relicId}
+
+      div.row.mb-3
+        div.col-md-3
+          div(class='relicAttr') Relic Name:
+        div.col-md-9
+          div #{relicName}
+
+      div.row.mb-3
+        div.col-md-3
+          div(class='relicAttr') Origin:
+        div.col-md-9
+          div #{origin}
+
+      div.row.mb-3
+        div.col-md-3
+          div(class='relicAttr') Estimated Value:
+        div.col-md-9
+          div #{estimatedValue}
+
+      // Buttons for delete and cancel
+      div.row.mt-4
+        div.col-md-6
+          button.btn.btn-danger.w-100(onclick="deleteRelic()") Delete
+        div.col-md-6
+          button.btn.btn-secondary.w-100(onclick="cancel()") Cancel
+
+    script.
+      const actionid = "#{actionid}";
+
+      function cancel() {
+        window.location.href = '/relics';
+      }
+
+      function deleteRelic() {
+        console.log("Starting delete");
+        fetch(actionid, {
+          method: 'DELETE'
+        }).then((resp) => {
+          if (!resp.ok) throw new Error(resp.statusText);
+          return resp.json();
+        }).then((body) => {
+          alert("Delete succeeded");
+          window.location.href = '/relics';
+        }).catch((error) => {
+          alert("Delete failed: " + error.message);
+        });
+      }

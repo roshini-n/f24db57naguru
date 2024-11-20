@@ -21,4 +21,6 @@ router.delete('/relics/:id', relic_controller.relic_delete);
 router.get('/detail', Detail_controller.relic_view_one_Page);
 router.get('/create', Detail_controller.relic_create_Page);
 router.get('/update', Detail_controller.relic_update_Page);
+router.get('/delete', Detail_controller.relic_delete_Page);
+
 module.exports = router;

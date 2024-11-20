@@ -38,3 +38,15 @@ exports.relic_create_Page = function (req, res) {
       res.send(`{'error': '${err}'}`);
     }
   };
+
+  exports.relic_delete_Page = async function(req, res) {
+    console.log("Delete view for id " + req.query.id)
+    try{
+      result = await Relic.findById(req.query.id)
+      res.render('relicdelete', { title: 'Relic Delete', toShow: 
+      result });
+    } catch(err){
+      res.status(500)
+      res.send(`{'error': '${err}'}`);
+    }
+  };
