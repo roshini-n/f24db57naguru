@@ -1,29 +1,63 @@
+//- extends layout
+
+//- block content
+//-   h1= title
+//-   link(rel='stylesheet', href='/stylesheets/style.css')
+
+//-   - let relicId = toShow._id
+//-   - let relic_name = toShow.relic_name
+//-   - let origin = toShow.origin
+//-   - let estimated_value = toShow.estimated_value
+
+//-   div
+//-     div.row
+//-       div(class='relicAttr mr-3') Relic ID is:
+//-       div #{relicId}
+  
+//-   div.row
+//-     div(class='relicAttr mr-3') Relic Name is:
+//-     div #{relic_name}
+  
+//-   div.row
+//-     div(class='relicAttr mr-3') Relic Origin Year is:
+//-     div #{origin}
+  
+//-   div.row
+//-     div(class='relicAttr mr-3') Relic Estimated Value is:
+//-     div #{estimated_value}
+
+//-   a.btn.btn-primary(href="/relics") Back to Collection
+
 extends layout
 
 block content
   h1= title
-  link(rel='stylesheet', href='/stylesheets/style.css')
 
-  - let relicId = toShow._id
-  - let relic_name = toShow.relic_name
-  - let origin = toShow.origin
-  - let estimated_value = toShow.estimated_value
+  if (toShow == null)
+    div.alert.alert-danger
+      h3 Error: Relic not found.
+      p The relic with the provided ID does not exist in the collection.
+      a.btn.btn-primary(href="/relics") Back to Collection
+  else
+    - let relicId = toShow._id
+    - let relicName = toShow.relic_name
+    - let relicOrigin = toShow.origin
+    - let relicValue = toShow.estimated_value
 
-  div
-    div.row
-      div(class='relicAttr mr-3') Relic ID is:
-      div #{relicId}
-  
-  div.row
-    div(class='relicAttr mr-3') Relic Name is:
-    div #{relic_name}
-  
-  div.row
-    div(class='relicAttr mr-3') Relic Origin Year is:
-    div #{origin}
-  
-  div.row
-    div(class='relicAttr mr-3') Relic Estimated Value is:
-    div #{estimated_value}
+    div.container
+      div.card.shadow.mb-4
+        div.card-body
+          div.row.mb-3
+            div.col-md-4.font-weight-bold Relic ID:
+            div.col-md-8 #{relicId}
+          div.row.mb-3
+            div.col-md-4.font-weight-bold Relic Name:
+            div.col-md-8 #{relicName}
+          div.row.mb-3
+            div.col-md-4.font-weight-bold Relic Origin:
+            div.col-md-8 #{relicOrigin}
+          div.row.mb-3
+            div.col-md-4.font-weight-bold Relic Value:
+            div.col-md-8 #{relicValue}
 
-  a.btn.btn-primary(href="/relics") Back to Collection
+      a.btn.btn-primary(href="/relics") Back to Collection
