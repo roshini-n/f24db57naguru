@@ -3,25 +3,30 @@ extends layout
 block content
   h1= title
 
-  // Unbuffered code block to define results array
-  -
+  // Ensure 'results' is passed to the template
+  - let items = results;
 
-  // Container for Bootstrap grid
+  // Main container
   .container-fluid
     .row
-      // Loop through each item in the results array with index
+      // Loop through each item in results
       each relic, index in results
         .col-sm-2
           h3 #{relic.relic_name}
           p Origin: #{relic.origin}
           p Estimated Value: #{relic.estimated_value}$
+          
+          // Purchase button
+          button(type="button", class="btn btn-outline-success", onclick=`buy(${index})`) Purchase
 
-          // Button that calls buy() function with the index of the relic
-          button(type="button", class="btn btn-outline-success", onclick=`buy(${index +1})`) Purchase
+          // Update button
+          button(type="button", class="btn btn-primary ml-1", onclick=`dispatch('/relics/update?id=${relic._id}')`) Update
 
-  // Script to define the buy() function
+  // JavaScript functions
   script.
-    function buy(index) {
-      alert(`You purchased item ${index}`);
+    function dispatch(path) {
+      window.location.href = path;
     }
-  
+    function buy(index) {
+      alert(`You purchased item ${index + 1}`);
+    }
