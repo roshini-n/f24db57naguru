@@ -35,9 +35,13 @@ var app = express();
 
 // Connect to MongoDB using Mongoose
 require('dotenv').config();
-const connectionString = process.env.MONGO_CON
+
 mongoose = require('mongoose');
-mongoose.connect(connectionString);
+const connectionString = process.env.MONGO_CON;
+mongoose.connect(connectionString)
+.then(() => console.log("MongoDB connected successfully"))
+.catch((err) => console.error("MongoDB connection error:", err));
+
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -92,29 +96,29 @@ async function recreateDB() {
   let instance2 = new Relic({ relic_name: "Samurai Sword", origin: "Japan", estimated_value: 12000 });
   let instance3 = new Relic({ relic_name: "Egyptian Amulet", origin: "Egypt", estimated_value: 8000 });
 
-  // Save instances to the database
-  instance1.save().then(doc=>{
-    console.log("Relic 1 saved")}
-    ).catch(err=>{
-    console.error(err)
-    });
-  instance2.save().then(doc=>{
-      console.log("Relic 2 saved")}
-      ).catch(err=>{
-      console.error(err)
-    });
+  // // Save instances to the database
+  // instance1.save().then(doc=>{
+  //   console.log("Relic 1 saved")}
+  //   ).catch(err=>{
+  //   console.error(err)
+  //   });
+  // instance2.save().then(doc=>{
+  //     console.log("Relic 2 saved")}
+  //     ).catch(err=>{
+  //     console.error(err)
+  //   });
       
-  instance3.save().then(doc=>{
-        console.log("Relic 3 saved")}
-        ).catch(err=>{
-        console.error(err)
-        });
-    }
+  // instance3.save().then(doc=>{
+  //       console.log("Relic 3 saved")}
+  //       ).catch(err=>{
+  //       console.error(err)
+  //       });
+  //   }
     
-  // await instance1.save().then(() => console.log("Relic 1 saved"));
-  // await instance2.save().then(() => console.log("Relic 2 saved"));
-  // await instance3.save().then(() => console.log("Relic 3 saved"));
-//}
+  await instance1.save().then(() => console.log("Relic 1 saved"));
+  await instance2.save().then(() => console.log("Relic 2 saved"));
+  await instance3.save().then(() => console.log("Relic 3 saved"));
+}
 
 // Seed the database on server start if needed
 let reseed = true;
