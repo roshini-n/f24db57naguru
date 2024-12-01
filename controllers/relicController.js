@@ -81,7 +81,7 @@ exports.relic_update_put = async function(req, res) {
         let toUpdate = await Relic.findById(req.params.id);
        
         if (!toUpdate) {
-            return res.status(404).send(`{"error": "Artifact with id ${req.params.id} not found"}`);
+            return res.status(404).send(`{"error": "Relic with id ${req.params.id} not found"}`);
         }
  
         // Do updates of properties
