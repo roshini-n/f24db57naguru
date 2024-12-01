@@ -31,6 +31,7 @@ var gridRouter = require('./routes/grid');
 var pickRouter = require('./routes/pick');
 var Relic = require("./models/relic");
 var resourceRouter = require('./routes/resource');
+//var relicsRouter = require('./routes/relicsRouter');
 var app = express();
 
 // Connect to MongoDB using Mongoose
@@ -74,6 +75,7 @@ app.use('/relics', relicsRouter);
 app.use('/grid', gridRouter);
 app.use('/pick', pickRouter);
 app.use('/resource', resourceRouter);
+app.use('/', relicsRouter);
 //app.use('/api/relics', relicsRouter);
 //app.use('/api/relics', relicsRouter);
 app.use('/resource', relicsRouter);

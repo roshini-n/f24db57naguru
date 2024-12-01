@@ -2,6 +2,18 @@
 // controllers/relicController.js
 var Relic = require('../models/relic');
 
+exports.getRelics = async (req, res) => {
+    try {
+        const results = await Relic.find();  // Replace with your actual data fetching logic
+        res.render('relics', {
+            title: 'Relics',
+            results: results,
+            user: req.user || null  // Pass user info if logged in
+        });
+    } catch (err) {
+        res.status(500).send(`Error fetching relics: ${err}`);
+    }
+};
 
 // List all relics
 exports.relic_view_all_Page = async function(req, res) {
