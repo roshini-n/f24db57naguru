@@ -1,38 +1,44 @@
 extends layout
 
 block content
-  h1= title
+  h1(class="text-center mt-4")= title
 
   // Ensure 'results' is passed to the template
   - let items = results;
 
   // Main container
   .container-fluid
+    .row.justify-content-center.mb-4
+      button(type="button", class="btn btn-success btn-lg", onclick="window.location='/create'") 
+        i(class="fas fa-plus-circle mr-2") Create New Relic
+
+    // Loop through each item in the relic collection (results)
     .row
-      button(type="button" onclick="window.location='/create'") Create New Relic
-
-      // Loop through each item in the relic collection (results)
       each relic, index in items
-        .col-sm-2
-          h3 #{relic.relic_name}
-
-          p Origin: #{relic.origin}
-          p Estimated Value: #{relic.estimated_value}$
-
-          // Button to view details of each relic
-          button(type="button" onclick=`dispatch('/relics/detail?id=${relic._id}')`) View Details
-
-
-          // Button to delete each relic
-          //button(type="button" onclick="window.location='/delete/#{relic.relic_id}'") Delete Relic
-          button(type="button" onclick=`dispatch('/relics/delete?id=${relic._id}')`)  Delete Relic
-
-          // Purchase button
-          button(type="button", class="btn btn-outline-success", onclick=`buy(${index})`) Purchase
-
-          // Update button
-          button(type="button", class="btn btn-primary ml-1", onclick=`dispatch('/relics/update?id=${relic._id}')`) Update
-
+        .col-sm-6.col-md-4.col-lg-3.mb-4
+          .card.shadow-lg
+            .card-header.text-center.font-weight-bold
+              h3 #{relic.relic_name}
+            .card-body
+              p 
+                strong Origin: 
+                | #{relic.origin}
+              p 
+                strong Estimated Value: 
+                | #{relic.estimated_value}$
+              .d-flex.justify-content-around.mt-3
+                // Button to view details of each relic
+                button(type="button", class="btn btn-info", onclick=`dispatch('/relics/detail?id=${relic._id}')`) 
+                  i(class="fas fa-eye") View
+                // Button to delete each relic
+                button(type="button", class="btn btn-danger", onclick=`dispatch('/relics/delete?id=${relic._id}')`) 
+                  i(class="fas fa-trash-alt") Delete
+                // Purchase button
+                button(type="button", class="btn btn-success", onclick=`buy(${index})`) 
+                  i(class="fas fa-shopping-cart") Purchase
+                // Update button
+                button(type="button", class="btn btn-primary", onclick=`dispatch('/relics/update?id=${relic._id}')`) 
+                  i(class="fas fa-edit") Update
 
   // JavaScript functions for handling actions
   script.
